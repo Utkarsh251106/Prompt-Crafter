@@ -1,0 +1,43 @@
+.business-container {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    max-width: 1400px;
+    margin: auto;
+}
+
+.form-card, .output-card {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.form-card {
+    width: 42%;
+}
+
+.output-card {
+    width: 58%;
+}
+
+textarea {
+    width: 100%;
+    min-height: 340px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1.4px solid #dcdcdc;
+    background: #fafafa;
+    resize: vertical;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+textarea:focus {
+    background: white;
+    border-color: #6a00ff;
+}
+
+.output-card button {
+    width: 180px;
+}
