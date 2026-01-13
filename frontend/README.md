@@ -1,16 +1,36 @@
-# React + Vite
+# VisualGrab – AI-Powered Marketing Prompt Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+VisualGrab is a full-stack application that generates high-quality, structured marketing prompts based on business details.  
+It helps creators, marketers, and small business owners generate visually consistent AI image prompts for platforms like Midjourney, DALL·E, and more.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+- Fully responsive React frontend (Vite)
+- Node.js + Express backend
+- OpenAI-powered prompt generation
+- Business category selection with “Others”
+- Validation: Only generates prompt when all fields are filled
+- Modern UI with clean spacing + simplified layout
+- Protected routes (user must be logged in)
+- Copy-to-clipboard prompt output
+- Ready for deployment on Netlify + Render
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🧠 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### **Frontend**
+- React (Vite)
+- React Router
+- CSS (custom styles)
+- Fetch API
+
+### **Backend**
+- Node.js
+- Express.js
+- OpenAI API
+- CORS + Body Parser
+
+---

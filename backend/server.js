@@ -13,7 +13,7 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// Hardcoded login
+// Hardcoded login (same as before)
 const USER = {
   username: "admin",
   password: "admin123"
@@ -28,31 +28,64 @@ app.post("/login", (req, res) => {
   return res.json({ success: false, message: "Invalid credentials" });
 });
 
-// ---- AI GENERATION ROUTE ----
+// ---------------------------------------------------------
+//     UPDATED AI GENERATION ROUTE (Option A + Format 1)
+// ---------------------------------------------------------
 app.post("/generate", async (req, res) => {
-  const { name, category, subCategory, persona, imageType } = req.body;
+  const f = req.body;
+
+  // Build structured prompt
+  const prompt = `
+Generate a structured marketing image prompt based on the following details:
+
+===============================
+ BUSINESS INFORMATION
+===============================
+Business Name: ${f.name}
+Category: ${f.category}
+Sub-Category / Service Type: ${f.subCategory}
+Target Audience Persona: ${f.persona}
+Image Type: ${f.imageType}
+
+===============================
+ BEFORE (Current State)
+===============================
+Persona (Before): ${f.beforePersona}
+Main Problem: ${f.beforeProblem}
+Emotional State: ${f.beforeEmotion}
+Environment / Situation: ${f.beforeEnvironment}
+Text on Image (Before): ${f.beforeText}
+
+===============================
+ AFTER (Transformed State)
+===============================
+Persona (After): ${f.afterPersona}
+Support Used: ${f.afterSupport}
+Results / Outcomes: ${f.afterResult}
+Emotional State: ${f.afterEmotion}
+Text on Image (After): ${f.afterText}
+
+===============================
+  OUTPUT REQUIREMENTS
+===============================
+- Provide a clean, structured marketing prompt.
+- Describe the Before state → Transition → After state.
+- Do NOT write a story.
+- Keep it professional, short, and ready for Midjourney / DALL·E.
+- Include all key details.
+`;
 
   try {
     const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",   // or gpt-4.1, gpt-4o
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
-          content: "You are an AI that generates marketing prompts based on business details."
+          content: "You generate structured AI image prompts for marketing."
         },
         {
           role: "user",
-          content: `
-Create a detailed AI image/prompt for this business:
-
-Business Name: ${name}
-Category: ${category}
-Sub-Category: ${subCategory}
-Target Audience Persona: ${persona}
-Image Type: ${imageType}
-
-The output should be structured, clear and perfect for image generation tools like Midjourney or DALL·E.
-          `
+          content: prompt
         }
       ]
     });

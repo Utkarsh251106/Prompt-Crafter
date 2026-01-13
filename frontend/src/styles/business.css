@@ -1,43 +1,181 @@
-.business-container {
-    display: flex;
-    gap: 40px;
+/* ============================
+   PAGE BACKGROUND
+============================ */
+.business-page {
     padding: 40px;
-    max-width: 1400px;
-    margin: auto;
+    background: #e6e6e6;
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
 }
 
-.form-card, .output-card {
-    background: white;
+/* ============================
+   HEADER
+============================ */
+.business-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.business-header h1 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #333;
+}
+
+.business-header p {
+    margin-top: 10px;
+    color: #555;
+    font-size: 18px;
+}
+
+/* ============================
+   MAIN TWO-COLUMN LAYOUT
+============================ */
+.business-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* ============================
+   LEFT COLUMN — FORM PANEL
+============================ */
+.form-panel {
+    background: linear-gradient(180deg, #4b4f52, #303639);
     padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    border-radius: 12px;
+    color: white;
 }
 
-.form-card {
-    width: 42%;
+/* VERTICAL FORM FIELDS */
+.vertical-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.output-card {
-    width: 58%;
+.form-panel label {
+    font-weight: 600;
+    color: white !important;
 }
 
-textarea {
-    width: 100%;
-    min-height: 340px;
-    padding: 14px;
-    border-radius: 10px;
-    border: 1.4px solid #dcdcdc;
-    background: #fafafa;
-    resize: vertical;
-    font-size: 15px;
-    margin-bottom: 20px;
-}
-
-textarea:focus {
+.form-panel input,
+.form-panel select {
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
     background: white;
-    border-color: #6a00ff;
+    outline: none;
 }
 
-.output-card button {
-    width: 180px;
+/* ORANGE GENERATE BUTTON */
+.generate-btn {
+    margin-top: 28px;
+    width: 100%;
+    padding: 14px;
+    background: #ff8c42;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.generate-btn:hover {
+    background: #ff7a1f;
+}
+
+.generate-btn:disabled {
+    background: #b5b5b5;
+    cursor: not-allowed;
+}
+
+/* ============================
+   RIGHT COLUMN — OUTPUT PANEL
+============================ */
+.output-panel {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.output-label {
+    font-weight: 600;
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.output-panel textarea {
+    width: 100%;
+    height: 420px;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* ============================
+   EDIT + COPY BUTTONS
+============================ */
+.output-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Copy Button (Orange) */
+.copy-btn {
+    width: 48%;
+    padding: 12px;
+    background: #ff8c42;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: #ff7a1f;
+}
+
+/* Edit Button (Grey → Light Blue on Hover) */
+.edit-btn {
+    width: 48%;
+    padding: 12px;
+    background: #dcdcdc;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.edit-btn:hover {
+    background: #6EC6FF;    /* LIGHT BLUE */
+    color: white;
+}
+
+/* ============================
+   RESPONSIVE DESIGN
+============================ */
+@media (max-width: 1100px) {
+    .business-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .form-panel,
+    .output-panel {
+        width: 100%;
+    }
 }

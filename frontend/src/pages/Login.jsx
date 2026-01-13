@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/login.css";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -27,23 +28,43 @@ export default function Login() {
     }
 
     return (
-        <div className="center-container">
-            <form className="card" onSubmit={handleLogin}>
-                <h2>Login</h2>
+        <div className="login-wrapper">
 
-                <label>Email</label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)} />
+            {/* Background diamond */}
+            <div className="diamond"></div>
 
-                <label>Password</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+            {/* Login box */}
+            <form className="login-card" onSubmit={handleLogin}>
 
-                <button type="submit">Login</button>
+                {/* Email Input */}
+                <div className="input-field">
+                    <i className="fa fa-user"></i>
+                    <input
+                        type="text"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
 
-                <p>{message}</p>
+                {/* Password Input */}
+                <div className="input-field">
+                    <i className="fa fa-lock"></i>
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+
+                <button type="submit" className="login-btn">
+                    LOGIN
+                </button>
+
+                <p style={{ color: "salmon", marginTop: "10px", textAlign: "center" }}>
+                    {message}
+                </p>
             </form>
         </div>
     );
