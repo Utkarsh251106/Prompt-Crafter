@@ -4,46 +4,87 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
-app.use(cors());
+
+// =============================
+//  MIDDLEWARE (IMPORTANT)
+// =============================
+
+// Allow frontend (5173) to talk to backend (5000)
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: "GET,POST",
+  allowedHeaders: "Content-Type"
+}));
+
+// Parse JSON body
 app.use(bodyParser.json());
 
-// ================================
-//  RULE SYSTEM FOR AFTER SECTION
-// ================================
 
-// Opposite emotions map
-const emotionMapping = {
-    "stressed": "relieved",
-    "confused": "confident",
-    "worried": "assured",
-    "frustrated": "empowered",
-    "tired": "energized",
-    "sad": "hopeful",
-    "anxious": "calm",
-    "overwhelmed": "in control"
+// =============================
+//  HARDCODED LOGIN
+// =============================
+
+const USER = {
+  username: "admin",
+  password: "admin123"
 };
 
-// Function to get opposite emotion
+app.post("/login", (req, res) => {
+  console.log("LOGIN REQUEST RECEIVED:", req.body);
+
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.json({ success: false, message: "Missing fields" });
+  }
+
+  if (username === USER.username && password === USER.password) {
+    return res.json({ success: true });
+  }
+
+  return res.json({ success: false, message: "Invalid credentials" });
+});
+
+
+// =============================
+//  RULE-BASED PROMPT GENERATION
+// =============================
+
+// Emotion opposites for rule engine
+const emotionMapping = {
+  "stressed": "relieved",
+  "confused": "confident",
+  "worried": "assured",
+  "frustrated": "empowered",
+  "tired": "energized",
+  "sad": "hopeful",
+  "anxious": "calm",
+  "overwhelmed": "in control"
+};
+
+// Reverse emotion
 function getOppositeEmotion(before) {
-    const key = before.toLowerCase().trim();
-    return emotionMapping[key] || "positive and confident";
+  if (!before) return "positive and confident";
+
+  const key = before.trim().toLowerCase();
+  return emotionMapping[key] || "positive and confident";
 }
 
-// Generate AFTER transformation
+// Auto-generate AFTER section
 function generateAfter(beforePersona, beforeEmotion, beforeProblem) {
-    return {
-        afterPersona: `${beforePersona} transformed`,
-        afterEmotion: getOppositeEmotion(beforeEmotion),
-        afterSupport: `Guided support and structured solution tailored to their needs`,
-        afterOutcome: `Successfully overcoming ${beforeProblem} with confidence`,
-        afterText: `Now confident, empowered and achieving results`
-    };
+  return {
+    afterPersona: `${beforePersona} transformed`,
+    afterEmotion: getOppositeEmotion(beforeEmotion),
+    afterSupport: "Expert-guided support system tailored to their needs",
+    afterOutcome: `Successfully overcoming ${beforeProblem} with clarity`,
+    afterText: "Now confident, empowered and achieving success"
+  };
 }
 
-// ======================================
-//      GENERATE ROUTE (RULE-BASED)
-// ======================================
+
 app.post("/generate", async (req, res) => {
+  console.log("GENERATE REQUEST RECEIVED:", req.body);
+
   const {
     name,
     category,
@@ -52,7 +93,7 @@ app.post("/generate", async (req, res) => {
     imageType,
     imageStyle,
 
-    // BEFORE inputs
+    // BEFORE only
     beforePersona,
     beforeProblem,
     beforeEmotion,
@@ -60,11 +101,9 @@ app.post("/generate", async (req, res) => {
     beforeText
   } = req.body;
 
-  // Step 1 — Apply rules
   const after = generateAfter(beforePersona, beforeEmotion, beforeProblem);
 
-  // Step 2 — Rule-based prompt creation
-  const prompt = `
+  const finalPrompt = `
 ==== BUSINESS DETAILS ====
 Business Name: ${name}
 Category: ${category}
@@ -72,37 +111,35 @@ Sub-Category: ${subCategory}
 Target Persona: ${persona}
 
 ==== BEFORE ====
-Persona (Before): ${beforePersona}
-Main Problem: ${beforeProblem}
-Emotion (Before): ${beforeEmotion}
+Persona: ${beforePersona}
+Problem: ${beforeProblem}
+Emotion: ${beforeEmotion}
 Environment: ${beforeEnvironment}
 Text on Image (Before): "${beforeText}"
 
-==== AFTER (Rule-Based Transformation) ====
-Persona (After): ${after.afterPersona}
+==== AFTER (Rule-Based) ====
+Persona: ${after.afterPersona}
 Support Used: ${after.afterSupport}
-Emotion (After): ${after.afterEmotion}
+Emotion: ${after.afterEmotion}
 Outcome: ${after.afterOutcome}
 Text on Image (After): "${after.afterText}"
 
-==== IMAGE STYLE ====
-Type: ${imageType}
-Style: ${imageStyle}
+==== FINAL VISUAL INSTRUCTION ====
+Create a transformation visual showing the BEFORE state struggling and the AFTER state confident and successful. Use the provided details to shape expressions, environment, colors, and storytelling.
+`;
 
-==== FINAL PROMPT ====
-Create a marketing-focused transformation visual showing the BEFORE state clearly transitioning into the AFTER state. The BEFORE state should emphasize struggle, negativity, or confusion. The AFTER should show confidence, empowerment, and success.
-  `;
-
-  // Step 3 — Return rule-based prompt
   res.json({
     success: true,
-    output: prompt
+    output: finalPrompt
   });
 });
 
-// ======================================
-// START SERVER
-// ======================================
-app.listen(5000, () => {
-  console.log("Backend server running on port 5000");
+
+// =============================
+//  START SERVER
+// =============================
+
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Backend server running on http://localhost:${PORT}`);
 });

@@ -4,52 +4,57 @@ import "../styles/login.css";
 
 export default function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
+
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [message, setMessage] = useState("");
+    const [error, setError] = useState("");
 
     async function handleLogin(e) {
         e.preventDefault();
+        setError("");
 
-        const res = await fetch("http://localhost:5000/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: email, password }),
-        });
+        try {
+            const res = await fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
 
-        const data = await res.json();
+            const data = await res.json();
 
-        if (data.success) {
-            localStorage.setItem("loggedIn", "true");
-            navigate("/home");
-        } else {
-            setMessage("Invalid login!");
+            if (data.success) {
+                navigate("/business");
+            } else {
+                setError("Invalid credentials");
+            }
+        } catch (err) {
+            setError("Could not connect to server");
         }
     }
 
     return (
         <div className="login-wrapper">
-
             {/* Background diamond */}
             <div className="diamond"></div>
 
-            {/* Login box */}
+            {/* Login form */}
             <form className="login-card" onSubmit={handleLogin}>
+                <h2 style={{ textAlign: "center", marginBottom: "25px" }}>Login</h2>
 
-                {/* Email Input */}
+                {/* EMAIL */}
                 <div className="input-field">
-                    <i className="fa fa-user"></i>
+                    <i className="fas fa-user"></i>
                     <input
                         type="text"
                         placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
 
-                {/* Password Input */}
+                {/* PASSWORD */}
                 <div className="input-field">
-                    <i className="fa fa-lock"></i>
+                    <i className="fas fa-lock"></i>
                     <input
                         type="password"
                         placeholder="Password"
@@ -58,13 +63,12 @@ export default function Login() {
                     />
                 </div>
 
-                <button type="submit" className="login-btn">
+                {/* BUTTON */}
+                <button className="login-btn" type="submit">
                     LOGIN
                 </button>
 
-                <p style={{ color: "salmon", marginTop: "10px", textAlign: "center" }}>
-                    {message}
-                </p>
+                {error && <p className="error">{error}</p>}
             </form>
         </div>
     );
