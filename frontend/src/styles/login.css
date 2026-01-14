@@ -1,0 +1,79 @@
+/* Full-page center */
+.login-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #b5aca4;  /* Light grey/brown background */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Rotated Diamond */
+.diamond {
+    width: 420px;
+    height: 420px;
+    background: linear-gradient(135deg, #6d7676, #34454c);
+    transform: rotate(45deg);
+    position: absolute;
+    z-index: 1;
+}
+
+/* Login form container */
+.login-card {
+    width: 360px;
+    padding: 30px;
+    background: rgba(0,0,0,0.75);
+    border-radius: 6px;
+    z-index: 2;
+    position: relative;
+    color: white;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.25);
+}
+
+/* Input wrapper */
+.input-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #999;
+    padding: 8px 0;
+}
+
+.input-field i {
+    margin-right: 10px;
+    color: #ddd;
+}
+
+/* Input text color FIX */
+.input-field input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #222; 
+    width: 100%;
+    font-size: 14px;
+}
+
+.input-field input::placeholder {
+    color: #444;
+}
+
+/* Login button */
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background: #ff7b64;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.login-btn:hover {
+    background: #ff6d54;
+}
