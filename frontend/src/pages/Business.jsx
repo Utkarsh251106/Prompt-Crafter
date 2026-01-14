@@ -14,8 +14,8 @@ export default function Business() {
     ];
 
     const imageStyles = [
-        "Professional", "Modern", "Minimalistic", "Elegant", "Bold & Vibrant",
-        "Clean & Simple", "Luxury", "Playful", "Corporate", "Dark Theme", "Light Theme"
+        "Professional","Modern","Minimalistic","Elegant","Bold & Vibrant",
+        "Clean & Simple","Luxury","Playful","Corporate","Dark Theme","Light Theme"
     ];
 
     const [form, setForm] = useState({
@@ -25,7 +25,21 @@ export default function Business() {
         subCategory: "",
         persona: "",
         imageType: "",
-        imageStyle: ""
+        imageStyle: "",
+
+        // SECTION 2 — BEFORE
+        beforePersona: "",
+        beforeProblem: "",
+        beforeEmotion: "",
+        beforeEnvironment: "",
+        beforeText: "",
+
+        // SECTION 2 — AFTER
+        afterPersona: "",
+        afterSupport: "",
+        afterOutcome: "",
+        afterEmotion: "",
+        afterText: ""
     });
 
     const [result, setResult] = useState("");
@@ -44,9 +58,7 @@ export default function Business() {
         setCanGenerate(filled);
     }, [form]);
 
-    const updateField = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
+    const updateField = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
     async function generate() {
         setResult("Generating...");
@@ -72,81 +84,111 @@ export default function Business() {
 
             <header className="business-header">
                 <h1>AI Prompt Generator</h1>
-                <p>Turn business details into a powerful AI-generated prompt.</p>
+                <p>Turn business details into powerful AI prompts.</p>
             </header>
 
-            {/* 2 COLUMN LAYOUT */}
-            <div className="business-layout">
+            <div className="layout">
 
-                {/* LEFT COLUMN (FORM) */}
-                <div className="form-panel">
+                {/* LEFT FORM */}
+                <div className="form-column">
 
-                    <div className="vertical-form">
+                    {/* SECTION 1 */}
+                    <h2 className="section-title">Business Details</h2>
 
-                        <label>Business Name</label>
-                        <input
-                            name="name"
-                            value={form.name}
-                            onChange={updateField}
-                        />
+                    <label>Business Name</label>
+                    <input name="name" value={form.name} onChange={updateField} />
 
-                        <label>Business Category</label>
-                        <select
-                            name="category"
-                            value={form.category}
-                            onChange={updateField}
-                        >
-                            <option value="">Select Category</option>
-                            {categories.map((c) => (
-                                <option key={c} value={c}>{c}</option>
-                            ))}
-                        </select>
+                    <label>Business Category</label>
+                    <select name="category" value={form.category} onChange={updateField}>
+                        <option value="">Select Category</option>
+                        {categories.map((c) => (
+                            <option key={c} value={c}>{c}</option>
+                        ))}
+                    </select>
 
-                        {form.category === "Others" && (
-                            <>
-                                <label>Custom Category</label>
-                                <input
-                                    name="customCategory"
-                                    value={form.customCategory}
-                                    onChange={updateField}
-                                    placeholder="Enter custom category"
-                                />
-                            </>
-                        )}
+                    {form.category === "Others" && (
+                        <>
+                            <label>Custom Category</label>
+                            <input
+                                name="customCategory"
+                                value={form.customCategory}
+                                onChange={updateField}
+                                placeholder="Enter custom category"
+                            />
+                        </>
+                    )}
 
-                        <label>Sub-Category</label>
-                        <input
-                            name="subCategory"
-                            value={form.subCategory}
-                            onChange={updateField}
-                        />
+                    <label>Sub-Category / Service Type</label>
+                    <input
+                        name="subCategory"
+                        value={form.subCategory}
+                        onChange={updateField}
+                    />
 
-                        <label>Target Audience Persona</label>
-                        <input
-                            name="persona"
-                            value={form.persona}
-                            onChange={updateField}
-                        />
+                    <label>Target Audience Persona</label>
+                    <input
+                        name="persona"
+                        value={form.persona}
+                        onChange={updateField}
+                    />
 
-                        <label>Image Type</label>
-                        <input
-                            name="imageType"
-                            value={form.imageType}
-                            onChange={updateField}
-                        />
+                    <label>Image Type</label>
+                    <input
+                        name="imageType"
+                        value={form.imageType}
+                        onChange={updateField}
+                    />
 
-                        <label>Image Style</label>
-                        <select
-                            name="imageStyle"
-                            value={form.imageStyle}
-                            onChange={updateField}
-                        >
-                            <option value="">Select Image Style</option>
-                            {imageStyles.map((s) => (
-                                <option key={s} value={s}>{s}</option>
-                            ))}
-                        </select>
-                    </div>
+                    <label>Image Style</label>
+                    <select
+                        name="imageStyle"
+                        value={form.imageStyle}
+                        onChange={updateField}
+                    >
+                        <option value="">Select Image Style</option>
+                        {imageStyles.map((s) => (
+                            <option key={s} value={s}>{s}</option>
+                        ))}
+                    </select>
+
+                    {/* SECTION 2 */}
+                    <h2 className="section-title">Before / After Framework</h2>
+
+                    {/* BEFORE */}
+                    <h3 className="sub-title">Before</h3>
+
+                    <label>Audience Persona (Before)</label>
+                    <input name="beforePersona" value={form.beforePersona} onChange={updateField} />
+
+                    <label>Main Problem (Before)</label>
+                    <input name="beforeProblem" value={form.beforeProblem} onChange={updateField} />
+
+                    <label>Emotional State (Before)</label>
+                    <input name="beforeEmotion" value={form.beforeEmotion} onChange={updateField} />
+
+                    <label>Environment / Situation (Before)</label>
+                    <input name="beforeEnvironment" value={form.beforeEnvironment} onChange={updateField} />
+
+                    <label>Text on Image (Before)</label>
+                    <input name="beforeText" value={form.beforeText} onChange={updateField} />
+
+                    {/* AFTER */}
+                    <h3 className="sub-title">After</h3>
+
+                    <label>Audience Persona (After)</label>
+                    <input name="afterPersona" value={form.afterPersona} onChange={updateField} />
+
+                    <label>Support Used</label>
+                    <input name="afterSupport" value={form.afterSupport} onChange={updateField} />
+
+                    <label>Results / Outcomes</label>
+                    <input name="afterOutcome" value={form.afterOutcome} onChange={updateField} />
+
+                    <label>Emotional State (After)</label>
+                    <input name="afterEmotion" value={form.afterEmotion} onChange={updateField} />
+
+                    <label>Text on Image (After)</label>
+                    <input name="afterText" value={form.afterText} onChange={updateField} />
 
                     <button
                         disabled={!canGenerate}
@@ -157,27 +199,22 @@ export default function Business() {
                     </button>
                 </div>
 
-                {/* RIGHT COLUMN (OUTPUT) */}
-                <div className="output-panel">
-
-                    <label className="output-label">Generated Prompt</label>
+                {/* OUTPUT */}
+                <div className="output-column">
+                    <label className="output-title">Generated Prompt</label>
 
                     <textarea value={result} readOnly />
 
-                    <div className="output-actions">
-                        <button
-                            className="copy-btn"
+                    <div className="action-row">
+                        <button className="copy-btn"
                             onClick={() => navigator.clipboard.writeText(result)}
                         >
                             Copy
                         </button>
 
-                        <button className="edit-btn">
-                            Edit
-                        </button>
+                        <button className="edit-btn">Edit</button>
                     </div>
                 </div>
-
             </div>
         </div>
     );

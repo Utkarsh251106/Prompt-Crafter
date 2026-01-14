@@ -2,106 +2,107 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const OpenAI = require("openai");
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// OpenAI Setup
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+// ================================
+//  RULE SYSTEM FOR AFTER SECTION
+// ================================
 
-// Hardcoded login (same as before)
-const USER = {
-  username: "admin",
-  password: "admin123"
+// Opposite emotions map
+const emotionMapping = {
+    "stressed": "relieved",
+    "confused": "confident",
+    "worried": "assured",
+    "frustrated": "empowered",
+    "tired": "energized",
+    "sad": "hopeful",
+    "anxious": "calm",
+    "overwhelmed": "in control"
 };
 
-app.post("/login", (req, res) => {
-  const { username, password } = req.body;
+// Function to get opposite emotion
+function getOppositeEmotion(before) {
+    const key = before.toLowerCase().trim();
+    return emotionMapping[key] || "positive and confident";
+}
 
-  if (username === USER.username && password === USER.password) {
-    return res.json({ success: true });
-  }
-  return res.json({ success: false, message: "Invalid credentials" });
-});
+// Generate AFTER transformation
+function generateAfter(beforePersona, beforeEmotion, beforeProblem) {
+    return {
+        afterPersona: `${beforePersona} transformed`,
+        afterEmotion: getOppositeEmotion(beforeEmotion),
+        afterSupport: `Guided support and structured solution tailored to their needs`,
+        afterOutcome: `Successfully overcoming ${beforeProblem} with confidence`,
+        afterText: `Now confident, empowered and achieving results`
+    };
+}
 
-// ---------------------------------------------------------
-//     UPDATED AI GENERATION ROUTE (Option A + Format 1)
-// ---------------------------------------------------------
+// ======================================
+//      GENERATE ROUTE (RULE-BASED)
+// ======================================
 app.post("/generate", async (req, res) => {
-  const f = req.body;
+  const {
+    name,
+    category,
+    subCategory,
+    persona,
+    imageType,
+    imageStyle,
 
-  // Build structured prompt
+    // BEFORE inputs
+    beforePersona,
+    beforeProblem,
+    beforeEmotion,
+    beforeEnvironment,
+    beforeText
+  } = req.body;
+
+  // Step 1 — Apply rules
+  const after = generateAfter(beforePersona, beforeEmotion, beforeProblem);
+
+  // Step 2 — Rule-based prompt creation
   const prompt = `
-Generate a structured marketing image prompt based on the following details:
+==== BUSINESS DETAILS ====
+Business Name: ${name}
+Category: ${category}
+Sub-Category: ${subCategory}
+Target Persona: ${persona}
 
-===============================
- BUSINESS INFORMATION
-===============================
-Business Name: ${f.name}
-Category: ${f.category}
-Sub-Category / Service Type: ${f.subCategory}
-Target Audience Persona: ${f.persona}
-Image Type: ${f.imageType}
+==== BEFORE ====
+Persona (Before): ${beforePersona}
+Main Problem: ${beforeProblem}
+Emotion (Before): ${beforeEmotion}
+Environment: ${beforeEnvironment}
+Text on Image (Before): "${beforeText}"
 
-===============================
- BEFORE (Current State)
-===============================
-Persona (Before): ${f.beforePersona}
-Main Problem: ${f.beforeProblem}
-Emotional State: ${f.beforeEmotion}
-Environment / Situation: ${f.beforeEnvironment}
-Text on Image (Before): ${f.beforeText}
+==== AFTER (Rule-Based Transformation) ====
+Persona (After): ${after.afterPersona}
+Support Used: ${after.afterSupport}
+Emotion (After): ${after.afterEmotion}
+Outcome: ${after.afterOutcome}
+Text on Image (After): "${after.afterText}"
 
-===============================
- AFTER (Transformed State)
-===============================
-Persona (After): ${f.afterPersona}
-Support Used: ${f.afterSupport}
-Results / Outcomes: ${f.afterResult}
-Emotional State: ${f.afterEmotion}
-Text on Image (After): ${f.afterText}
+==== IMAGE STYLE ====
+Type: ${imageType}
+Style: ${imageStyle}
 
-===============================
-  OUTPUT REQUIREMENTS
-===============================
-- Provide a clean, structured marketing prompt.
-- Describe the Before state → Transition → After state.
-- Do NOT write a story.
-- Keep it professional, short, and ready for Midjourney / DALL·E.
-- Include all key details.
-`;
+==== FINAL PROMPT ====
+Create a marketing-focused transformation visual showing the BEFORE state clearly transitioning into the AFTER state. The BEFORE state should emphasize struggle, negativity, or confusion. The AFTER should show confidence, empowerment, and success.
+  `;
 
-  try {
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: "You generate structured AI image prompts for marketing."
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ]
-    });
-
-    res.json({
-      success: true,
-      output: completion.choices[0].message.content
-    });
-
-  } catch (error) {
-    console.error("OpenAI Error:", error);
-    res.status(500).json({ success: false, error: "Failed to generate content" });
-  }
+  // Step 3 — Return rule-based prompt
+  res.json({
+    success: true,
+    output: prompt
+  });
 });
 
-// Start Server
+// ======================================
+// START SERVER
+// ======================================
 app.listen(5000, () => {
   console.log("Backend server running on port 5000");
 });

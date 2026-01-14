@@ -29,153 +29,151 @@
 }
 
 /* ============================
-   MAIN TWO-COLUMN LAYOUT
+   TWO COLUMN LAYOUT 
 ============================ */
-.business-layout {
+.layout {
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 40px;
+    grid-template-columns: 0.9fr 0.5fr; /* LEFT bigger, RIGHT smaller */
+    gap: 50px;
+    max-width: 1500px;
+    margin: 0 auto;
     align-items: start;
 }
 
 /* ============================
-   LEFT COLUMN — FORM PANEL
+   LEFT FORM COLUMN
 ============================ */
-.form-panel {
-    background: linear-gradient(180deg, #4b4f52, #303639);
-    padding: 30px;
-    border-radius: 12px;
-    color: white;
-}
-
-/* VERTICAL FORM FIELDS */
-.vertical-form {
+.form-column {
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
-.form-panel label {
+/* SECTION TITLES */
+.section-title {
+    margin-top: 30px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.sub-title {
+    margin-top: 18px;
+    font-size: 18px;
     font-weight: 600;
-    color: white !important;
+    color: #444;
+    margin-bottom: 10px;
 }
 
-.form-panel input,
-.form-panel select {
+/* LABEL → INPUT spacing = 16px */
+.form-column label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+/* INPUT → NEXT LABEL spacing = 24px */
+.form-column input,
+.form-column select {
     padding: 12px;
-    border-radius: 6px;
     border: none;
-    font-size: 14px;
+    border-radius: 6px;
     background: white;
+    font-size: 15px;
+    margin-bottom: 24px;
     outline: none;
 }
 
-/* ORANGE GENERATE BUTTON */
+/* GENERATE BUTTON */
 .generate-btn {
-    margin-top: 28px;
-    width: 100%;
+    margin-top: 15px;
     padding: 14px;
     background: #ff8c42;
     color: white;
-    font-size: 18px;
-    font-weight: 700;
     border: none;
     border-radius: 6px;
+    font-size: 18px;
+    font-weight: 700;
     cursor: pointer;
-    transition: 0.25s ease;
 }
 
 .generate-btn:hover {
     background: #ff7a1f;
 }
 
-.generate-btn:disabled {
-    background: #b5b5b5;
-    cursor: not-allowed;
-}
-
 /* ============================
-   RIGHT COLUMN — OUTPUT PANEL
+   RIGHT OUTPUT COLUMN
 ============================ */
-.output-panel {
+.output-column {
     background: white;
     padding: 25px;
     border-radius: 12px;
+    max-width: 450px; /* RIGHT SIDE SMALLER */
 }
 
-.output-label {
+.output-title {
+    font-size: 18px;
     font-weight: 600;
-    display: block;
-    font-size: 16px;
     margin-bottom: 10px;
-    color: #333;
 }
 
-.output-panel textarea {
+.output-column textarea {
     width: 100%;
-    height: 420px;
-    padding: 12px;
+    height: 300px;   /* smaller on purpose */
     border-radius: 6px;
     border: 1px solid #ccc;
-    font-size: 14px;
+    padding: 12px;
     resize: vertical;
 }
 
-/* ============================
-   EDIT + COPY BUTTONS
-============================ */
-.output-actions {
+/* BUTTON ROW */
+.action-row {
     margin-top: 15px;
     display: flex;
     justify-content: space-between;
 }
 
-/* Copy Button (Orange) */
-.copy-btn {
+.copy-btn,
+.edit-btn {
     width: 48%;
     padding: 12px;
-    background: #ff8c42;
-    color: white;
-    border: none;
     border-radius: 6px;
+    border: none;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.2s ease;
+}
+
+/* COPY */
+.copy-btn {
+    background: #ff8c42;
+    color: white;
 }
 
 .copy-btn:hover {
     background: #ff7a1f;
 }
 
-/* Edit Button (Grey → Light Blue on Hover) */
+/* EDIT */
 .edit-btn {
-    width: 48%;
-    padding: 12px;
     background: #dcdcdc;
     color: #333;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.25s ease;
 }
 
 .edit-btn:hover {
-    background: #6EC6FF;    /* LIGHT BLUE */
+    background: #6EC6FF;
     color: white;
 }
 
 /* ============================
-   RESPONSIVE DESIGN
+   RESPONSIVE
 ============================ */
 @media (max-width: 1100px) {
-    .business-layout {
+    .layout {
         grid-template-columns: 1fr;
-        gap: 25px;
+        gap: 30px;
     }
 
-    .form-panel,
-    .output-panel {
-        width: 100%;
+    .output-column {
+        max-width: 100%;
     }
 }
